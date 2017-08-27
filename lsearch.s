@@ -1,6 +1,6 @@
 
-#		      VARIABLE MAP			                            
-#							                                          
+#	VARIABLE MAP			                            
+#						                                          
 #	%esi - int n					                                
 #	%rax - int result				                              
 #	%rdi - int *A					                                
@@ -13,35 +13,83 @@
 	.globl	lsearch_2
 
 lsearch_2:
-	testl	%esi, %esi		            # if (n < 0)
-	jle	change_result		            # return -1
-	movslq	%esi, %rax		          # returnValue = n
-	leaq	-4(%rdi,%rax,4), %rax     # returnValue = A[n-1]
-	movl	(%rax), %r8d		          # temp = returnValue
-	movl	%edx, (%rax)		          # returnValue = target
-	cmpl	(%rdi), %edx		          # if (target == A[x=1])
-	je	zero_i			                # determine_result()
-	addq	$4, %rdi		              # A[x=1] = A[x=2] 
-	xorl	%ecx, %ecx		            # i = 0
+
+ # if (n < 0)
+	testl	%esi, %esi		
+	
+ # return -1
+	jle	change_result		        
+
+  # returnValue = n
+	movslq	%esi, %rax		    
+	
+  # returnValue = A[n-1]
+	leaq	-4(%rdi,%rax,4), %rax   
+	
+  # temp = returnValue
+	movl	(%rax), %r8d	
+	
+  # returnValue = target
+	movl	%edx, (%rax)
+	
+  # if (target == A[x=1])
+	cmpl	(%rdi), %edx	
+	
+  # determine_result()
+	je	zero_i	
+  # A[x=1] = A[x=2] 
+	addq	$4, %rdi		           
+  # i = 0
+	xorl	%ecx, %ecx	
+	
 loop:
-	addq	$4, %rdi		              # A[x=2] = A[x=3] .. A[x=n-1]
-	addl	$1, %ecx		              # i++
-	cmpl	-4(%rdi), %edx		        # while (A[x=1..n-1] != i)
-	jne	loop			    
-determine_result:			            # int determineResult()
-	movl	%r8d, (%rax)		          # returnValue = tmp
-	leal	-1(%rsi), %eax		        # returnValue = n-1
-	cmpl	%ecx, %eax		            # if (returnValue > i)
-	jg	i_is_result		              # return i
-	cmpl	%edx, %r8d		            # if (temp != target)
-	jne	change_result		            # return -1
+  
+  # A[x=2] = A[x=3] .. A[x=n-1]
+	addq	$4, %rdi		              
+   
+  # i++
+	addl	$1, %ecx		
+	
+  # while (A[x=1..n-1] != i)
+	cmpl	-4(%rdi), %edx		        
+	
+  # int determineResult()
+	jne	loop	
+	
+determine_result:			
+
+  # returnValue = tmp
+	movl	%r8d, (%rax)	
+	
+  # returnValue = n-1
+	leal	-1(%rsi), %eax	
+	
+  # if (returnValue > i)
+	cmpl	%ecx, %eax		
+	
+  # return i
+	jg	i_is_result		          
+	
+  # if (temp != target)
+	cmpl	%edx, %r8d
+	
+  # return -1
+	jne	change_result		            
 	rep ret
-i_is_result:				              # int returnI()
+	
+# int returnI()
+i_is_result:		
+
 	movl	%ecx, %eax
 	ret
+	
 change_result:
-	movl	$-1, %eax		              # int return-1()
+
+   # int return-1()
+	movl	$-1, %eax		           
 	ret
-zero_i:			
+	
+zero_i:	
+
 	xorl	%ecx, %ecx
 	jmp	determine_result
