@@ -37,8 +37,10 @@ lsearch_2:
 	
   # determine_result()
 	je	zero_i	
+	
   # A[x=1] = A[x=2] 
-	addq	$4, %rdi		           
+	addq	$4, %rdi	
+	
   # i = 0
 	xorl	%ecx, %ecx	
 	
