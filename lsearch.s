@@ -1,14 +1,14 @@
-#########################################################
-#		      VARIABLE MAP			                            #
-#							                                          #
-#	%esi - int n					                                #
-#	%rax - int result				                              #
-#	%rdi - int *A					                                #
-#	%rcx - int i					                                #
-# %edx - int target				                              #
-#	%r8d - temporary register, int tmp		                #
-#							                                          #
-#########################################################
+
+#		      VARIABLE MAP			                            
+#							                                          
+#	%esi - int n					                                
+#	%rax - int result				                              
+#	%rdi - int *A					                                
+#	%rcx - int i					                                
+# 	%edx - int target				                             
+#	%r8d - temporary register, int tmp		                
+#							                                          
+
 
 	.globl	lsearch_2
 
